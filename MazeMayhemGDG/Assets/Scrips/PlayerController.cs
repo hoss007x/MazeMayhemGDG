@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamage
 {
     // Cache the CharacterController component
     [SerializeField] CharacterController CharacterController;
 
     // Movement parameters
+    // Player hit points
+    [SerializeField] int HP;
     // Base movement speed
     [SerializeField] float Speed;
     // Sprint modifier
@@ -143,4 +145,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int amount)
+    {
+        // Remove an amount from the HP
+        HP -= amount;
+    }
 }
