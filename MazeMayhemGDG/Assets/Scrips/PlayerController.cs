@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamage
 {
     // Cache the CharacterController component
     [SerializeField] CharacterController CharacterController;
+    [SerializeField] LayerMask ignoreLayer;
 
     // Movement parameters
     // Player hit points
@@ -18,6 +20,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int MaxJumps;
     // Gravity force
     [SerializeField] int Gravity;
+
     // Shooting parameters
     [SerializeField] int ShootDamage;
     // Shooting parameters
@@ -32,13 +35,17 @@ public class PlayerController : MonoBehaviour, IDamage
 
     // Current jump count
     int JumpCount;
+    // Original HP
+    int HPOrig;
+
     // Timer for shooting
     float ShootTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        HPOrig = HP;
+        UpdatePlayerUI();
     }
 
     // Update is called once per frame
@@ -129,7 +136,7 @@ public class PlayerController : MonoBehaviour, IDamage
         // Declare a RaycastHit variable to store hit information
         RaycastHit hit;
         // Perform a raycast from the camera's position forward
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, ShootDistances))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, ShootDistances, ~ignoreLayer))
         {
             // Log the name of the hit object
             Debug.Log("Hit: " + hit.collider.name);
@@ -149,5 +156,25 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         // Remove an amount from the HP
         HP -= amount;
+        UpdatePlayerUI();
+        StartCoroutine(screenFlashDamage());
+
+        if (HP <= 0)
+        {
+            // You Lose!
+            GameManager.instance.youLose();
+        }
+    }
+
+    public void UpdatePlayerUI()
+    {
+        GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+    }
+
+    IEnumerator screenFlashDamage()
+    {
+        GameManager.instance.playerDamagePanel.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerDamagePanel.SetActive(false);
     }
 }

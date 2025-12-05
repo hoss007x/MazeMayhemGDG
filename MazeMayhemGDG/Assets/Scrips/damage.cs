@@ -19,6 +19,7 @@ public class Damage : MonoBehaviour
         if (type == damageType.moving || type == damageType.homing)
         {
             Destroy(gameObject, destroyTime);
+
             if (type == damageType.moving)
             {
                 rb.linearVelocity = transform.forward * speed;
@@ -40,12 +41,14 @@ public class Damage : MonoBehaviour
         {
             return;
         }
+
         IDamage dmg = other.GetComponent<IDamage>();
 
         if (dmg != null && type != damageType.DOT)
         {
             dmg.TakeDamage(damageAmount);
         }
+
         if (type == damageType.homing || type == damageType.moving)
         {
             Destroy(gameObject);
