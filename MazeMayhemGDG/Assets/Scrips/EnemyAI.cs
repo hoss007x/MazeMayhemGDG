@@ -1,14 +1,26 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour , IDamage
 {
     [SerializeField] int HP;
 
     [SerializeField] Renderer model;
+    [SerializeField] NavMeshAgent agent;
+
+    [SerializeField] GameObject bullet;
+    [SerializeField] float shootRate;
+    [SerializeField] Transform shootPos;
 
 
     Color colorOrig;
+
+    float shootTimer;
+
+    bool playerInRange;
+
+    Vector3 playerDir;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,11 +39,42 @@ public class EnemyAI : MonoBehaviour , IDamage
     void Update()
 
     {
+        shootTimer += Time.deltaTime;
+
+        if (playerInRange )
+        {
+            playerDir = GameManager.instance.player.transform.position - transform.position;
+            agent.SetDestination(GameManager.instance.player.transform.position);
 
 
-
+            if (shootTimer >= shootRate )
+            {
+                shoot();
+            }
+        }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+        }
+    }
+
+    void shoot()
+    {
+        shootTimer = 0;
+        Instantiate(bullet, shootPos.position, transform.rotation);
+    }
 
     public void TakeDamage(int amount)
 
