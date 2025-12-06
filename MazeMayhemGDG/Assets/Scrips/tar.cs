@@ -23,6 +23,10 @@ public class tar : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (other.isTrigger)
+        {
+            return;
+        }
         if (other.CompareTag("Player"))
         {
             
@@ -45,6 +49,10 @@ public class tar : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        if (other.isTrigger)
+        {
+            return;
+        }
         if (other.CompareTag("Player"))
         {
 
