@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5232358502685980376}
   - component: {fileID: -2542579253563627663}
   - component: {fileID: -2483410957566725086}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Dart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ MonoBehaviour:
   damageAmount: 1
   speed: 3
   damageRate: 0
-  destroyTime: 5
+  destroyTime: 7
 --- !u!135 &5232358502685980376
 SphereCollider:
   m_ObjectHideFlags: 0
