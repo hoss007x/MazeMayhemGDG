@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamage
+public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
 {
     // Cache the CharacterController component
     [SerializeField] CharacterController CharacterController;
@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int MaxJumps;
     // Gravity force
     [SerializeField] int Gravity;
+    // Item buff timer
+    [SerializeField] int itemBuffTime;
 
     // Shooting parameters
     [SerializeField] int ShootDamage;
@@ -194,11 +196,43 @@ public class PlayerController : MonoBehaviour, IDamage
         return speedOrig;
     }
     
-
     IEnumerator screenFlashDamage()
     {
         GameManager.instance.playerDamagePanel.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         GameManager.instance.playerDamagePanel.SetActive(false);
+    }
+
+    //Handle healing
+    public void healing(int amount)
+    {
+        HP += amount;
+        UpdatePlayerUI();
+    }
+    //Handle speed buff 
+    public void faster(int amount)
+    {
+        Speed += amount;
+        StartCoroutine(FasterTimer(amount));
+    }
+    //Handle speed buff timer
+    IEnumerator FasterTimer(int amount)
+    {
+        yield return new WaitForSeconds(itemBuffTime);
+        Speed -= amount;
+
+    }
+    //Handle damage buff
+    public void stronger(int amount)
+    {
+        ShootDamage += amount;
+        StartCoroutine(StrongerTimer(amount));
+    }
+    //Handle damage buff timer
+    IEnumerator StrongerTimer(int amount)
+    {
+        yield return new WaitForSeconds(itemBuffTime);
+        ShootDamage -= amount;
+
     }
 }
