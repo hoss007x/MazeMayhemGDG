@@ -6,6 +6,7 @@ public class Acid : MonoBehaviour
     [SerializeField] int damageAmount;
     [SerializeField] float damageRate;
     [SerializeField] float residualDamageTime;
+    bool isDamaging;
     float time;
 
 
@@ -54,8 +55,10 @@ public class Acid : MonoBehaviour
         {
             time += Time.deltaTime;
 
+            isDamaging = true;
             rD.TakeDamage(damageAmount);
             yield return new WaitForSeconds(damageRate);
+            isDamaging = false;
         }
        
      
