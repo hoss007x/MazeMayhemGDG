@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 3606999429447572901}
   - component: {fileID: 2779643579150720545}
   m_Layer: 0
-  m_Name: Enemy 1
+  m_Name: Enemy 1 Ar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,14 +209,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3014bde2d77dadd4bb78a21d4f4b28c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  HP: 3
+  HP: 2
   FOV: 90
   faceTargetSpeed: 5
   model: {fileID: 4083767043610897104}
   agent: {fileID: 3946454810300524284}
-  headPos: {fileID: 0}
+  headPos: {fileID: 3782968329822725783}
   bullet: {fileID: 5963556776153289362, guid: 5560f1b607eada54c91359077d93d1a2, type: 3}
-  shootRate: 0.5
+  shootRate: 0.2
   shootPos: {fileID: 6228222836065839549}
 --- !u!195 &3946454810300524284
 NavMeshAgent:
@@ -425,13 +425,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2889019970884054816}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.449, y: -0.154, z: 0.15}
+  m_LocalRotation: {x: 0.07622635, y: -0.6015812, z: -0.05362643, w: 0.793356}
+  m_LocalPosition: {x: -1.6013505, y: -0.17173417, z: 0.13409217}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6636756518779500229}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.235, y: -74.633, z: -10.2}
 --- !u!1 &3120378092083577265
 GameObject:
   m_ObjectHideFlags: 0
