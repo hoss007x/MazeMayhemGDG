@@ -8,6 +8,7 @@ public class items : MonoBehaviour
     [SerializeField] int healAmount;
     [SerializeField] int damageIncrease;
     [SerializeField] int speedIncrease;
+    [SerializeField] int buffTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

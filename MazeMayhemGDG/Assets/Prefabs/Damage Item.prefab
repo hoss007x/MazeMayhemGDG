@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3922991730714364524}
   - component: {fileID: 6185421182944533834}
   - component: {fileID: 8645020974739634556}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Damage Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,6 +52,7 @@ MonoBehaviour:
   healAmount: 0
   damageIncrease: 2
   speedIncrease: 0
+  buffTimer: 0
 --- !u!33 &3922991730714364524
 MeshFilter:
   m_ObjectHideFlags: 0

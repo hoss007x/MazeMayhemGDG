@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2085606942122582790}
   - component: {fileID: 1664718549229045733}
   - component: {fileID: 5327589541051276960}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -58,7 +58,6 @@ MonoBehaviour:
   JumpSpeed: 15
   MaxJumps: 2
   Gravity: 35
-  itemBuffTime: 0
   ShootDamage: 1
   ShootDistances: 150
   ShootRate: 0.5
