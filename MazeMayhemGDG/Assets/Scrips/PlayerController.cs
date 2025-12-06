@@ -40,10 +40,12 @@ public class PlayerController : MonoBehaviour, IDamage
 
     // Timer for shooting
     float ShootTimer;
-
+    float speedOrig;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        speedOrig = Speed;
+
         HPOrig = HP;
         UpdatePlayerUI();
     }
@@ -114,6 +116,10 @@ public class PlayerController : MonoBehaviour, IDamage
             Speed /= SprintModifier;
         }
     }
+   public float getSprintMod()
+    {
+        return SprintModifier;
+    }
 
     // Handle jumping
     void Jump()
@@ -170,6 +176,24 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
     }
+    public void setSpeed(float nSpeed)
+    {
+        Speed = nSpeed;
+    }
+    public float getSpeed()
+    {
+        return Speed;
+    }
+   public float getSpeedOrig()
+    {
+        if (Input.GetButton("Sprint"))
+        {
+            Speed =speedOrig;
+        }
+        speedOrig = Speed;
+        return speedOrig;
+    }
+    
 
     IEnumerator screenFlashDamage()
     {
