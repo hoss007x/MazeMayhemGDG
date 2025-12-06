@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1059176411526792218}
   - component: {fileID: 3049741252052299014}
   - component: {fileID: 2410630614396856613}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 595cd9bf8eddece43914e73335b3bdd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::tar
+  slow: 1
 --- !u!33 &1059176411526792218
 MeshFilter:
   m_ObjectHideFlags: 0

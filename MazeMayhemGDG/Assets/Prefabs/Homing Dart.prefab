@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5765944563037352834}
   - component: {fileID: 5232358502685980376}
   - component: {fileID: -2542579253563627663}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Homing Dart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
