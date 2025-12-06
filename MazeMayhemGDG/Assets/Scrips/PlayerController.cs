@@ -170,6 +170,14 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
     }
+    public void setSpeed(float nSpeed)
+    {
+        Speed = nSpeed;
+    }
+    public float getSpeed()
+    {
+        return Speed;
+    }
 
     IEnumerator screenFlashDamage()
     {
