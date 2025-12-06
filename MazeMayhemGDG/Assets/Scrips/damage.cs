@@ -32,7 +32,7 @@ public class Damage : MonoBehaviour
     {
         if (type == damageType.homing)
         {
-            //rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * speed * Time.deltaTime;
+            rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * speed * Time.deltaTime;
         }
     }
     private void OnTriggerEnter(Collider other)
