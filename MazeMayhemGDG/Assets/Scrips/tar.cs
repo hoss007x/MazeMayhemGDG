@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class tar : MonoBehaviour
 {
-    [Range(1,5)][SerializeField] int slow;
+    [Range(1,5)][SerializeField] float slow;
     float nSpeed;
-    float speedOri;
+    float speedOrig;
+    float sprintMod;
+    float sSpeed;
+    int entered;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,22 +19,45 @@ public class tar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("player"))
+        if (other.CompareTag("Player"))
         {
-            speedOri = GameManager.instance.player.GetComponent<PlayerController>().getSpeed();
-            nSpeed = speedOri / slow;
-            GameManager.instance.player.GetComponent<PlayerController>().setSpeed(nSpeed);
+            
+            if (entered == 0)
+            {
+                entered++;
+                speedOrig = GameManager.instance.player.GetComponent<PlayerController>().getSpeedOrig();
+                nSpeed = speedOrig / slow;
+                sprintMod = GameManager.instance.player.GetComponent<PlayerController>().getSprintMod();
+              
+                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(nSpeed);
+            }
+            else 
+            {
+                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(nSpeed);
+            }
+            sSpeed = speedOrig * sprintMod;
+
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("player"))
+        if (other.CompareTag("Player"))
         {
-            GameManager.instance.player.GetComponent<PlayerController>().setSpeed(speedOri);
+
+            if (Input.GetButton("Sprint"))
+            {
+               
+                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(sSpeed);
+            }
+            else
+            { 
+                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(speedOrig); 
+            }
+           
         }
     }
 }
