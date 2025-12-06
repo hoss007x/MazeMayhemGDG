@@ -44,19 +44,23 @@ public class Acid : MonoBehaviour
 
         IDamage dmg = other.GetComponent<IDamage>();
         StartCoroutine (residualDamage(dmg));
+        time = 0;
     }
    
    
     IEnumerator residualDamage(IDamage rD)
     {
         
-        for ( time = 0;  time != residualDamageTime; time += Time.deltaTime)
+       for (time = 0; time < residualDamageTime;  time += Time.deltaTime)
         {
+            time += Time.deltaTime;
+
             isDamaging = true;
             rD.TakeDamage(damageAmount);
             yield return new WaitForSeconds(damageRate);
             isDamaging = false;
         }
+       
      
     }
 
