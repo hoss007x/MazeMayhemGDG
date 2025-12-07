@@ -3,34 +3,66 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour
 {
     public Transform[] patrolPoints;
-    public int TargetPoint;
-    public float speed;
+
+    public float speed = 3f;
+
+    private int CurrentPatrolIndex = 0;
+
+    private Rigidbody rb;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        TargetPoint = 0;
+      rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(transform.position == patrolPoints[TargetPoint].position)
-        {
-           increaseTargetInt();
-        }
-        transform.position = Vector3.MoveTowards(transform.position, patrolPoints[TargetPoint].position, speed * Time.deltaTime);
-
+        Patrol();
     }
 
-    void increaseTargetInt()
+    void Patrol()
     {
-        TargetPoint++;
-        if(TargetPoint >= patrolPoints.Length)
+        if (patrolPoints.Length == 0) return;
+
+        Transform targetpatrolpoint = patrolPoints[CurrentPatrolIndex];
+        Vector3 direction = (targetpatrolpoint.position - transform.position).normalized;
+
+        rb.MovePosition(transform.position + direction * speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetpatrolpoint.position) < 0.1f)
         {
-            TargetPoint = 0;
+            CurrentPatrolIndex = (CurrentPatrolIndex + 1) % patrolPoints.Length;
         }
+
     }
 
+    private void OnDrawGizmos()
+    {
+        if (patrolPoints != null && patrolPoints.Length > 0)
+        {
+            Gizmos.color = Color.red;
+            foreach (Transform point in patrolPoints)
+            {
+                if (point != null)
+                    Gizmos.DrawSphere(point.position, 0.3f);
+            }
+
+            Gizmos.color = Color.green;
+            for (int i = 0; i < patrolPoints.Length; i++)
+            {
+
+                if (patrolPoints[i] != null && patrolPoints[(i + 1) % patrolPoints.Length] != null)
+                {
+                    Gizmos.DrawLine(patrolPoints[i].position, patrolPoints[(i + 1) % patrolPoints.Length].position);
+                }
+            }
+
+        }
+
+
+
+    }
 }
