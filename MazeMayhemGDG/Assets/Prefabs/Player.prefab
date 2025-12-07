@@ -51,12 +51,12 @@ MonoBehaviour:
   CharacterController: {fileID: 5327589541051276960}
   ignoreLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   HP: 10
   Speed: 5
-  SprintModifier: 5
+  SprintModifier: 3
   JumpSpeed: 15
-  MaxJumps: 2
+  MaxJumps: 1
   Gravity: 35
   itemBuffTime: 0
   ShootDamage: 1
