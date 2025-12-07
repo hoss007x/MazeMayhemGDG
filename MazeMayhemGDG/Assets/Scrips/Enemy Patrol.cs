@@ -5,6 +5,8 @@ public class EnemyPatrol : MonoBehaviour
     public Transform[] patrolPoints;
 
     public float speed = 3f;
+    public float detectionRange = 10f;
+    public Transform Player;
 
     private int CurrentPatrolIndex = 0;
 
@@ -20,7 +22,7 @@ public class EnemyPatrol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Patrol();
+            Patrol();
     }
 
     void Patrol()
@@ -62,6 +64,9 @@ public class EnemyPatrol : MonoBehaviour
 
         }
 
+        // Draw detection range
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
 
 
     }
