@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1266280078956943390}
   - component: {fileID: 4167289790687355868}
   - component: {fileID: 5100029757584401381}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sniper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 5963556776153289362}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.511, y: 1.21, z: 16.767}
+  m_LocalPosition: {x: -7.5, y: 1.21, z: 16.767}
   m_LocalScale: {x: 0.07063612, y: 0.048619274, z: -0.059515934}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Damage
   type: 0
   rb: {fileID: 5100029757584401381}
-  damageAmount: 5
+  damageAmount: 3
   speed: 60
   damageRate: 0
   destroyTime: 6
