@@ -1,73 +1,46 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    public Transform[] patrolPoints;
+  NavMeshAgent agent;
 
-    public float speed = 3f;
-    public float detectionRange = 10f;
-    public Transform Player;
+  public Transform[] Waypoints;
 
-    private int CurrentPatrolIndex = 0;
+   int WaypointIndex;
 
-    private Rigidbody rb;
-
+   Vector3 target;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-      rb = GetComponent<Rigidbody>();
+     agent = GetComponent<NavMeshAgent>();
+      UpdateDestination();
     }
 
     // Update is called once per frame
     void Update()
     {
-            Patrol();
-    }
-
-    void Patrol()
-    {
-        if (patrolPoints.Length == 0) return;
-
-        Transform targetpatrolpoint = patrolPoints[CurrentPatrolIndex];
-        Vector3 direction = (targetpatrolpoint.position - transform.position).normalized;
-
-        rb.MovePosition(transform.position + direction * speed * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, targetpatrolpoint.position) < 0.1f)
+        if (Vector3.Distance(transform.position, target) < 1)
         {
-            CurrentPatrolIndex = (CurrentPatrolIndex + 1) % patrolPoints.Length;
+            IterateWaypointIndex();
+            UpdateDestination();
         }
-
     }
 
-    private void OnDrawGizmos()
+    void UpdateDestination()
     {
-        if (patrolPoints != null && patrolPoints.Length > 0)
-        {
-            Gizmos.color = Color.red;
-            foreach (Transform point in patrolPoints)
-            {
-                if (point != null)
-                    Gizmos.DrawSphere(point.position, 0.3f);
-            }
-
-            Gizmos.color = Color.green;
-            for (int i = 0; i < patrolPoints.Length; i++)
-            {
-
-                if (patrolPoints[i] != null && patrolPoints[(i + 1) % patrolPoints.Length] != null)
-                {
-                    Gizmos.DrawLine(patrolPoints[i].position, patrolPoints[(i + 1) % patrolPoints.Length].position);
-                }
-            }
-
-        }
-
-        // Draw detection range
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
-
-
+        target = Waypoints[WaypointIndex].position;
+        agent.SetDestination(target);
     }
+
+    void IterateWaypointIndex()
+    {
+        WaypointIndex++;
+        if (WaypointIndex >= Waypoints.Length)
+        {
+            WaypointIndex = 0;
+        }
+    }
+
 }
