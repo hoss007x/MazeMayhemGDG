@@ -1,32 +1,30 @@
+using System.Collections;
 using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    [SerializeField] GameObject targetTeleporter;
-    [SerializeField] GameObject teleporter;
+    public Transform player;
+    public Transform receiver;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        if (other.tag == "Player")
         {
-            
-            Vector3 targetPosition = targetTeleporter.transform.position;
-            targetPosition.y += 1.0f; // Adjust height to avoid clipping into the ground
-            other.transform.position = targetPosition;
-            
+            Vector3 portalToPlayer = player.position - transform.position;
+            float dotProduct = Vector3.Dot(transform.up, portalToPlayer);
+
+            if (dotProduct < 0f)
+            {
+                float rotationDiff = -Quaternion.Angle(transform.rotation, receiver.rotation);
+                rotationDiff += 180;
+                player.Rotate(Vector3.up, rotationDiff);
+
+                Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
+                player.position = receiver.position + positionOffset;
+
+                player.GetComponent<CharacterController>().enabled = false;
+                player.GetComponent<CharacterController>().enabled = true;
+            }
         }
     }
-
 }
