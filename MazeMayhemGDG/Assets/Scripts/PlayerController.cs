@@ -259,4 +259,8 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         ShootDamage -= amount;
 
     }
+    public bool GetIsSprinting()
+    {
+        return sprinting;
+    }
 }

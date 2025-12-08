@@ -5,10 +5,10 @@ public class tar : MonoBehaviour
 {
     [Range(1,5)][SerializeField] float slow;
     float nSpeed;
+    float sNSpeed;
     float speedOrig;
+    float sSpeedOrig;
     float sprintMod;
-    float sSpeed;
-    int entered;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,21 +29,37 @@ public class tar : MonoBehaviour
         }
         if (other.CompareTag("Player"))
         {
-            
-            if (entered == 0)
+            sSpeedOrig = GameManager.instance.player.GetComponent<PlayerController>().getSpeedOrig();
+            sprintMod = GameManager.instance.player.GetComponent<PlayerController>().getSprintMod();
+            sSpeedOrig *= sprintMod;
+            sNSpeed = sSpeedOrig / slow;
+            speedOrig = GameManager.instance.player.GetComponent<PlayerController>().getSpeedOrig();
+            nSpeed = speedOrig / slow;
+
+
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.isTrigger)
+        {
+            return;
+        }
+        if (other.CompareTag("Player"))
+        {
+            if (GameManager.instance.player.GetComponent<PlayerController>().GetIsSprinting() == true)
             {
-                entered++;
-                speedOrig = GameManager.instance.player.GetComponent<PlayerController>().getSpeedOrig();
-                nSpeed = speedOrig / slow;
-                sprintMod = GameManager.instance.player.GetComponent<PlayerController>().getSprintMod();
-              
+                
+                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(sNSpeed);
+
+
+            }
+            else
+            {
+               
                 GameManager.instance.player.GetComponent<PlayerController>().setSpeed(nSpeed);
             }
-            else 
-            {
-                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(nSpeed);
-            }
-            sSpeed = speedOrig * sprintMod;
+
 
         }
     }
@@ -56,16 +72,19 @@ public class tar : MonoBehaviour
         if (other.CompareTag("Player"))
         {
 
-            if (Input.GetButton("Sprint"))
+            if (GameManager.instance.player.GetComponent<PlayerController>().GetIsSprinting() == true)
             {
                
-                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(sSpeed);
+                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(sSpeedOrig);
+
+
             }
             else
-            { 
-                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(speedOrig); 
+            {
+               
+                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(speedOrig);
             }
-           
+
         }
     }
 }
