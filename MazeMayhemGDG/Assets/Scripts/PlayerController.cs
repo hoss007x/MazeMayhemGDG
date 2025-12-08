@@ -43,6 +43,9 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     // Timer for shooting
     float ShootTimer;
     float speedOrig;
+
+    bool sprinting;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -108,14 +111,17 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         // Check if the sprint button is pressed
         if (Input.GetButtonDown("Sprint"))
         {
+            sprinting = true;
             // Increase speed when sprint button is pressed
             Speed *= SprintModifier;
+            
         }
         else if(Input.GetButtonUp("Sprint"))
         {
-
+            sprinting = false;
             // Reset speed when sprint button is released
             Speed /= SprintModifier;
+
         }
     }
    public float getSprintMod()
@@ -190,7 +196,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     {
         if (Input.GetButton("Sprint"))
         {
-            Speed =speedOrig;
+            Speed = speedOrig;
         }
         speedOrig = Speed;
         return speedOrig;
@@ -212,15 +218,33 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     //Handle speed buff 
     public void faster(int amount)
     {
-        Speed += amount;
+        if (sprinting)
+        {
+            Speed /= SprintModifier;
+            Speed += amount;
+            Speed *= SprintModifier;
+        }
+        else
+        {
+            Speed += amount;
+        }
+        
         StartCoroutine(FasterTimer(amount));
     }
     //Handle speed buff timer
     IEnumerator FasterTimer(int amount)
     {
         yield return new WaitForSeconds(itemBuffTime);
-        Speed -= amount;
-
+        if (sprinting)
+        {
+            Speed /= SprintModifier;
+            Speed -= amount;
+            Speed *= SprintModifier;
+        }
+        else
+        {
+            Speed = speedOrig;
+        }
     }
     //Handle damage buff
     public void stronger(int amount)
@@ -234,5 +258,9 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         yield return new WaitForSeconds(itemBuffTime);
         ShootDamage -= amount;
 
+    }
+    public bool GetIsSprinting()
+    {
+        return sprinting;
     }
 }
