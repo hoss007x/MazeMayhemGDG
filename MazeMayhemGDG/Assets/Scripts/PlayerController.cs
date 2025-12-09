@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     // Item buff timer
     [SerializeField] int itemBuffTime;
 
+
     // Shooting parameters
     [SerializeField] int ShootDamage;
     // Shooting parameters
@@ -39,12 +40,15 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     int JumpCount;
     // Original HP
     int HPOrig;
+    //Speed buff amount
+    int SpeedBuffAmount;
 
     // Timer for shooting
     float ShootTimer;
     float speedOrig;
 
     bool sprinting;
+    bool speedActive;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -218,6 +222,8 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     //Handle speed buff 
     public void faster(int amount)
     {
+        SpeedBuffAmount = amount;
+        speedActive = true;
         if (sprinting)
         {
             Speed /= SprintModifier;
@@ -235,8 +241,10 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     IEnumerator FasterTimer(int amount)
     {
         yield return new WaitForSeconds(itemBuffTime);
+        speedActive= false;
         if (sprinting)
-        {
+        { 
+
             Speed /= SprintModifier;
             Speed -= amount;
             Speed *= SprintModifier;
@@ -262,5 +270,13 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     public bool GetIsSprinting()
     {
         return sprinting;
+    }
+    public bool GetSpeedActive()
+    {
+        return speedActive;
+    }
+    public int GetSpeedBuff()
+    {
+       return SpeedBuffAmount;
     }
 }
