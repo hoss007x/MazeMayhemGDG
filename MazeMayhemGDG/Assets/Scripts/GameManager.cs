@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
     public PlayerController playerScript;
+    public GameObject TextHitBox;
 
     public bool isPaused;
 
@@ -77,14 +78,6 @@ public class GameManager : MonoBehaviour
     {
         gameGoalCount += amount;
         gameGoalCountText.text = gameGoalCount.ToString("F0");
-
-        //if(gameGoalCount <= 0)
-        //{
-        //    // You Win!
-        //    statePause();
-        //    menuActive = menuWin;
-        //    menuActive.SetActive(true);
-        //}
     }
 
     public void updateKeyAmount(int amount)
