@@ -6,6 +6,7 @@ public class Textspawner : MonoBehaviour
     [SerializeField] int TextTimeShown;
     [SerializeField] TMP_Text Text;
     [SerializeField] string message;
+    [SerializeField] GameObject TextSpawner;
 
     public bool timer;
     public bool ShowText;
@@ -47,10 +48,8 @@ public class Textspawner : MonoBehaviour
     }
 
     private void HideText()
-   {
-      Text.gameObject.SetActive(false);
-      ShowText = false;
-      timer = false;
-      Destroy(gameObject);
+    {
+        Destroy(TextSpawner);
+      
     }
 }
