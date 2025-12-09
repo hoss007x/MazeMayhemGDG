@@ -19,6 +19,10 @@ public class Textspawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.isTrigger)
+        {
+            return;
+        }
         // Check if the object entering is the player
         if (other.CompareTag("Player") && Text != null)
         {
@@ -29,25 +33,24 @@ public class Textspawner : MonoBehaviour
     }
     private void Update()
     {
-        if (ShowText == true && timer != true)
+        if (ShowText == true && timer == true)
         {
-            timer = true;
             Invoke("HideText", TextTimeShown);
         }
         else if(ShowText == true && timer == false)
         {
-            HideText();
+            if (Input.GetButtonDown("Submit"))
+            {
+                HideText();
+            }
         }
     }
 
-   private void HideText()
+    private void HideText()
    {
-        if (Input.GetButtonDown("submit"))
-        {
-            Text.gameObject.SetActive(false);
-            ShowText = false;
-            timer = false;
-
-        }
+      Text.gameObject.SetActive(false);
+      ShowText = false;
+      timer = false;
+      Destroy(gameObject);
     }
 }
