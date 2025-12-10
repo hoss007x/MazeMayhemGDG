@@ -1,7 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
+public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 {
     // Cache the CharacterController component
     [SerializeField] CharacterController CharacterController;
@@ -23,7 +24,10 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     // Item buff timer
     [SerializeField] int itemBuffTime;
 
-
+    // List of guns
+    [SerializeField] List<gunStats> gunList = new List<gunStats>();
+    // Current gun index
+    [SerializeField] GameObject gunModel;
     // Shooting parameters
     [SerializeField] int ShootDamage;
     // Shooting parameters
@@ -42,6 +46,8 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     int HPOrig;
     //Speed buff amount
     int SpeedBuffAmount;
+    // Current gun list position
+    int gunListPos;
 
     // Timer for shooting
     float ShootTimer;
@@ -103,11 +109,14 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         CharacterController.Move(PlayerVelocity * Time.deltaTime);
 
         // Handle shooting
-        if (Input.GetButtonDown("Fire1") && ShootTimer >= ShootRate)
+        if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCurr > 0 && ShootTimer >= ShootRate)
         {
             // Handle shooting
             Shoot();
         }
+
+        selectGun();
+        reload();
     }
 
     void Sprint()
@@ -151,6 +160,8 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         // Check if the shoot button is pressed and if the shoot timer has exceeded the shoot rate
         ShootTimer = 0;
 
+        gunList[gunListPos].ammoCurr--;
+
         // Declare a RaycastHit variable to store hit information
         RaycastHit hit;
         // Perform a raycast from the camera's position forward
@@ -158,6 +169,9 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         {
             // Log the name of the hit object
             Debug.Log("Hit: " + hit.collider.name);
+
+            // Instantiate the hit effect at the hit point
+            Instantiate(gunList[gunListPos].hitEffect, hit.point, Quaternion.identity);
 
             // Try to get the IDamage component from the hit object
             IDamage dmg = hit.collider.GetComponent<IDamage>();
@@ -168,6 +182,51 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
                 dmg.TakeDamage(ShootDamage);
             }
         }
+    }
+    void reload()
+    {
+        if (Input.GetButtonDown("Reload") && gunList.Count > 0)
+        {
+            gunList[gunListPos].ammoCurr = gunList[gunListPos].ammoMax;
+        }
+    }
+
+    public void getGunStats(gunStats gun)
+    {
+        gunList.Add(gun);
+        gunListPos = gunList.Count - 1;
+
+        changeGun();
+    }
+
+    void changeGun()
+    {
+        ShootDamage = gunList[gunListPos].ShootDamage;
+        ShootDistances = gunList[gunListPos].ShootDistances;
+        ShootRate = gunList[gunListPos].ShootRate;
+
+        gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].gunModel.GetComponent<MeshFilter>().sharedMesh;
+        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gunList[gunListPos].gunModel.GetComponent<MeshRenderer>().sharedMaterial;
+
+
+    }
+
+
+    void selectGun()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && gunListPos < gunList.Count - 1)
+        {
+            gunListPos++;
+            changeGun();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && gunListPos > 0)
+        {
+            gunListPos--;
+
+            changeGun();
+        }
+
+
     }
 
     public void TakeDamage(int amount)
