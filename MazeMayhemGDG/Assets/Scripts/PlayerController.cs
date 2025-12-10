@@ -224,6 +224,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
             gunListPos--;
 
             changeGun();
+
         }
 
 
