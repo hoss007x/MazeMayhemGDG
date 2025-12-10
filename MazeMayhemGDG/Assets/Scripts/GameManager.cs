@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -12,17 +13,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
 
     public TMP_Text gameGoalCountText;
+    public TMP_Text KeyCountText;
     public Image playerHPBar;
     public GameObject playerDamagePanel;
 
     public GameObject player;
     public PlayerController playerScript;
+    public GameObject TextHitBox;
 
     public bool isPaused;
 
     float timeScaleOrig;
 
-    int gameGoalCount;
+    public int gameGoalCount;
+    public int Keys;
 
     void Awake()
     {
@@ -74,14 +78,19 @@ public class GameManager : MonoBehaviour
     {
         gameGoalCount += amount;
         gameGoalCountText.text = gameGoalCount.ToString("F0");
+    }
 
-        if(gameGoalCount <= 0)
-        {
-            // You Win!
-            statePause();
-            menuActive = menuWin;
-            menuActive.SetActive(true);
-        }
+    public void updateKeyAmount(int amount)
+    {
+        Keys += amount;
+        KeyCountText.text = Keys.ToString("F0");
+    }
+
+    public void youWin()
+    {
+               statePause();
+        menuActive = menuWin;
+        menuActive.SetActive(true);
     }
 
     public void youLose()
