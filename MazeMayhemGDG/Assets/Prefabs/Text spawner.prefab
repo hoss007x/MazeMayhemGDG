@@ -185,6 +185,7 @@ MonoBehaviour:
   TextTimeShown: 6
   Text: {fileID: 8655973532543437566}
   message: Use| W A S D |to move
+  TextSpawner: {fileID: 0}
   timer: 0
   ShowText: 1
 --- !u!65 &7281398540296406669
