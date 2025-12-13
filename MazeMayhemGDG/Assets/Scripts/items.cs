@@ -12,13 +12,13 @@ public class items : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // different sound effects need here for different items collected 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        RotateItem();
     }
     
     private void OnTriggerEnter(Collider other)
@@ -44,6 +44,24 @@ public class items : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    void RotateItem()
+    {
+        Vector3 rotSpeed = new Vector3 (0,0,0);
+        if (type == itemType.faster)
+        {
+            rotSpeed = new Vector3 (22, 22, 0);
+        }
+        else if(type == itemType.healing)
+        {
+            rotSpeed = new Vector3(0, 45, 0);
+        }
+        else if(type == itemType.stronger)
+        {
+            rotSpeed = new Vector3(0, 45, 0);
+        }
+        transform.Rotate(rotSpeed * Time.deltaTime); 
     }
 
 }
