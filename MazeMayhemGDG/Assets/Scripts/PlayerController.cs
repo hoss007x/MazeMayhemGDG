@@ -54,7 +54,9 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     float speedOrig;
 
     bool sprinting;
-    bool speedActive;
+    bool speedActive = false;
+    bool strengthActive = false;
+    bool healingActive = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -246,7 +248,36 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
     public void UpdatePlayerUI()
     {
+        //fill health bar to correct amount
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+
+        //check Speed icon pop up 
+        if (speedActive)
+        {
+            GameManager.instance.speedIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.speedIcon.enabled = false;
+        }
+        //check Strength icon pop up
+        if (strengthActive)
+        {
+            GameManager.instance.strengthIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.strengthIcon.enabled = false;
+        }
+        //check Healing icon pop up
+        if (healingActive)
+        {
+            GameManager.instance.healingIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.healingIcon.enabled = false;
+        }
     }
     public void setSpeed(float nSpeed)
     {
@@ -277,6 +308,15 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     public void healing(int amount)
     {
         HP += amount;
+        healingActive = true;
+        UpdatePlayerUI();
+        StartCoroutine(healingTimer());
+    }
+
+    IEnumerator healingTimer()
+    {
+        yield return new WaitForSeconds(3f);
+        healingActive = false;
         UpdatePlayerUI();
     }
     //Handle speed buff 
@@ -284,6 +324,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         SpeedBuffAmount = amount;
         speedActive = true;
+        UpdatePlayerUI();
         if (sprinting)
         {
             Speed /= SprintModifier;
@@ -302,6 +343,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         yield return new WaitForSeconds(itemBuffTime);
         speedActive= false;
+        UpdatePlayerUI();
         if (sprinting)
         { 
 
@@ -318,6 +360,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     public void stronger(int amount)
     {
         ShootDamage += amount;
+        strengthActive = true;
         StartCoroutine(StrongerTimer(amount));
     }
     //Handle damage buff timer
@@ -325,7 +368,8 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         yield return new WaitForSeconds(itemBuffTime);
         ShootDamage -= amount;
-
+        strengthActive = false;
+        UpdatePlayerUI();
     }
     public bool GetIsSprinting()
     {
