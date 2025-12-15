@@ -17,10 +17,6 @@ public class GameManager : MonoBehaviour
     public Image playerHPBar;
     public GameObject playerDamagePanel;
 
-    public Image speedIcon;
-    public Image strengthIcon;
-    public Image healingIcon;
-
     public GameObject player;
     public PlayerController playerScript;
     public GameObject TextHitBox;
