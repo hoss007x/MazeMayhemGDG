@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     public TMP_Text gameGoalCountText;
     public TMP_Text KeyCountText;
+    public TMP_Text AmmoMaxCount;
+    public TMP_Text AmmoLeftCount;
     public Image playerHPBar;
     public GameObject playerDamagePanel;
 
@@ -34,7 +36,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-       
         instance = this;
         timeScaleOrig = Time.timeScale;
       
@@ -86,13 +87,19 @@ public class GameManager : MonoBehaviour
 
     public void updateKeyAmount(int amount)
     {
-        Keys += amount;
+        Keys += amount; 
         KeyCountText.text = Keys.ToString("F0");
+    }
+
+    public void updateAmmoCount(int max, int cur)
+    {
+        AmmoMaxCount.text = max.ToString("F0");
+        AmmoLeftCount.text = cur.ToString("F0");
     }
 
     public void youWin()
     {
-               statePause();
+        statePause();
         menuActive = menuWin;
         menuActive.SetActive(true);
     }
