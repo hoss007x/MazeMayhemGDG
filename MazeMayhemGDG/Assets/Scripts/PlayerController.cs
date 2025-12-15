@@ -163,6 +163,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         ShootTimer = 0;
 
         gunList[gunListPos].ammoCurr--;
+        GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
 
         // Declare a RaycastHit variable to store hit information
         RaycastHit hit;
@@ -190,6 +191,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         if (Input.GetButtonDown("Reload") && gunList.Count > 0)
         {
             gunList[gunListPos].ammoCurr = gunList[gunListPos].ammoMax;
+            GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
         }
     }
 
@@ -210,7 +212,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].gunModel.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterial = gunList[gunListPos].gunModel.GetComponent<MeshRenderer>().sharedMaterial;
 
-
+        GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
     }
 
 
@@ -224,12 +226,8 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         else if (Input.GetAxis("Mouse ScrollWheel") < 0 && gunListPos > 0)
         {
             gunListPos--;
-
             changeGun();
-
         }
-
-
     }
 
     public void TakeDamage(int amount)
@@ -367,7 +365,10 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     IEnumerator StrongerTimer(int amount)
     {
         yield return new WaitForSeconds(itemBuffTime);
-        ShootDamage -= amount;
+        if (ShootDamage != gunList[gunListPos].ShootDamage)
+        {
+            ShootDamage = gunList[gunListPos].ShootDamage;
+        }
         strengthActive = false;
         UpdatePlayerUI();
     }
