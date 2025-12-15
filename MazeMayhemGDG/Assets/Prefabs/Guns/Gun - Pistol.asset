@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21716731284fae54b8a09acd8cebc6ec, type: 3}
-  m_Name: Gun - Sniper
+  m_Name: Gun - Pistol
   m_EditorClassIdentifier: Assembly-CSharp::gunStats
-  gunModel: {fileID: 1829597508155286, guid: 7359baf27e84aa44cafac3788c8be0f1, type: 3}
-  ShootDamage: 10
-  ShootDistances: 639
-  ShootRate: 3
-  ammoCurr: 8
-  ammoMax: 10
-  ammoReloadAmount: 1
+  gunModel: {fileID: 1694449805434718, guid: 6f1a7354265853f44b0ed5e2e43676ad, type: 3}
+  ShootDamage: 3
+  ShootDistances: 51
+  ShootRate: 0.999
+  ammoCurr: 29
+  ammoMax: 30
+  ammoReloadAmount: 10
   hitEffect: {fileID: 1476897492240610364, guid: 5801abf45d614a744b7f86821332fb8f, type: 3}
   shootsound: []
   shootSoundVol: 0

@@ -191,6 +191,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         if (Input.GetButtonDown("Reload") && gunList.Count > 0)
         {
             gunList[gunListPos].ammoCurr = gunList[gunListPos].ammoMax;
+            gunList[gunListPos].ammoMax -= gunList[gunListPos].ammoReloadAmount;
             GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
         }
     }
