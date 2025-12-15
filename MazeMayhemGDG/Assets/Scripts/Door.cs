@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    [SerializeField] int keysRequired;
+    [SerializeField] GameObject wall;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,9 +18,9 @@ public class Door : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {   
-        if (other.CompareTag("Player") && GameManager.instance.Keys == 0 && GameManager.instance.gameGoalCount == 0)
+        if (other.CompareTag("Player") && GameManager.instance.Keys == keysRequired)
         {
-            GameManager.instance.youWin();
+            Destroy(gameObject);
         }
     }
 }
