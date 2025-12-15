@@ -51,15 +51,15 @@ public class items : MonoBehaviour
         Vector3 rotSpeed = new Vector3 (0,0,0);
         if (type == itemType.faster)
         {
-            rotSpeed = new Vector3 (22, 22, 0);
+            rotSpeed = new Vector3 (45, 45, 0);
         }
         else if(type == itemType.healing)
         {
-            rotSpeed = new Vector3(0, 45, 0);
+            rotSpeed = new Vector3(0, 90, 0);
         }
         else if(type == itemType.stronger)
         {
-            rotSpeed = new Vector3(0, 45, 0);
+            rotSpeed = new Vector3(0, 90, 0);
         }
         transform.Rotate(rotSpeed * Time.deltaTime); 
     }
