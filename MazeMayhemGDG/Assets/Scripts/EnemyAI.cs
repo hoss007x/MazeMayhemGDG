@@ -20,6 +20,9 @@ public class EnemyAI : MonoBehaviour , IDamage
 
     [SerializeField] GameObject dropItem;
 
+    [SerializeField] Animator anim;
+    [SerializeField] int animTranSpeed;
+
 
     Color colorOrig;
 
@@ -52,6 +55,8 @@ public class EnemyAI : MonoBehaviour , IDamage
     {
         shootTimer += Time.deltaTime;
 
+        locomotion();
+
         if (agent.remainingDistance < 0.01f)
             roamTimer += Time.deltaTime;
 
@@ -70,6 +75,14 @@ public class EnemyAI : MonoBehaviour , IDamage
         {
             roam();
         }
+    }
+
+    void locomotion()
+    {
+        float agentSpeedCur = agent.velocity.normalized.magnitude;
+        float agentSpeedAnim = anim.GetFloat("Speed");
+
+        anim.SetFloat("Speed", Mathf.MoveTowards(agentSpeedAnim, agentSpeedCur, Time.deltaTime * animTranSpeed));
     }
 
     void roam()
@@ -145,6 +158,7 @@ public class EnemyAI : MonoBehaviour , IDamage
     {
         shootTimer = 0;
         Instantiate(bullet, shootPos.position, transform.rotation);
+        anim.SetTrigger("Shoot");
     }
 
     public void TakeDamage(int amount)
