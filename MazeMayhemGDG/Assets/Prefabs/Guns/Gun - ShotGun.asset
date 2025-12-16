@@ -19,6 +19,6 @@ MonoBehaviour:
   ammoMax: 15
   magSize: 5
   ammoCurr: 5
-  hitEffect: {fileID: 1476897492240610364, guid: 5801abf45d614a744b7f86821332fb8f, type: 3}
+  hitEffect: {fileID: 7409913502908094827, guid: 7afa9046cfd623a4f83f58733eb15714, type: 3}
   shootsound: []
   shootSoundVol: 0
