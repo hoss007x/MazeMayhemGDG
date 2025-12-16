@@ -4,11 +4,25 @@ using UnityEngine;
 public class tar : MonoBehaviour
 {
     [Range(1,5)][SerializeField] float slow;
+    //new speed
     float nSpeed;
+    //Sprinting new speed
     float sNSpeed;
+    //New speed w/ active speed buff
+    float nASpeed;
+    //Sprinting new speed w/ active speed buff
+    float sNASpeed;
+    //Original speed
     float speedOrig;
+    //Sprinting Original speed
     float sSpeedOrig;
+    //Original speed w/ active speed buff
+    float aSpeedOrig;
+    //Sprinting original speed w/ active speed buff
+    float sASpeedOrig;
+    //Sprint modifier
     float sprintMod;
+    int speedBoostAmount;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,6 +35,7 @@ public class tar : MonoBehaviour
     {
        
     }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.isTrigger)
@@ -35,7 +50,9 @@ public class tar : MonoBehaviour
             sNSpeed = sSpeedOrig / slow;
             speedOrig = GameManager.instance.player.GetComponent<PlayerController>().getSpeedOrig();
             nSpeed = speedOrig / slow;
-
+            speedBoostAmount = GameManager.instance.player.GetComponent<PlayerController>().GetSpeedBuff();
+            sNASpeed = sNSpeed * speedBoostAmount;
+            nASpeed = nSpeed * speedBoostAmount;
 
         }
     }
@@ -47,18 +64,37 @@ public class tar : MonoBehaviour
         }
         if (other.CompareTag("Player"))
         {
-            if (GameManager.instance.player.GetComponent<PlayerController>().GetIsSprinting() == true)
+            if (GameManager.instance.player.GetComponent<PlayerController>().GetSpeedActive() == true)
             {
-                
-                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(sNSpeed);
+                if (GameManager.instance.player.GetComponent<PlayerController>().GetIsSprinting() == true)
+                {
+                    
+
+                    GameManager.instance.player.GetComponent<PlayerController>().setSpeed(sNASpeed);
 
 
+                }
+                else
+                {
+                    
+                    GameManager.instance.player.GetComponent<PlayerController>().setSpeed(nASpeed);
+                }
             }
             else
             {
-               
-                GameManager.instance.player.GetComponent<PlayerController>().setSpeed(nSpeed);
+                if (GameManager.instance.player.GetComponent<PlayerController>().GetIsSprinting() == true)
+                {
+                    
+                    GameManager.instance.player.GetComponent<PlayerController>().setSpeed(sNSpeed);
+
+
+                }
+                else
+                {
+                    GameManager.instance.player.GetComponent<PlayerController>().setSpeed(nSpeed);
+                }
             }
+           
 
 
         }

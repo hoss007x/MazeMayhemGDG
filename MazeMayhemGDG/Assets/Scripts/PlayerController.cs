@@ -1,7 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
+public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 {
     // Cache the CharacterController component
     [SerializeField] CharacterController CharacterController;
@@ -23,6 +24,10 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     // Item buff timer
     [SerializeField] int itemBuffTime;
 
+    // List of guns
+    [SerializeField] List<gunStats> gunList = new List<gunStats>();
+    // Current gun index
+    [SerializeField] GameObject gunModel;
     // Shooting parameters
     [SerializeField] int ShootDamage;
     // Shooting parameters
@@ -39,12 +44,19 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     int JumpCount;
     // Original HP
     int HPOrig;
+    //Speed buff amount
+    int SpeedBuffAmount;
+    // Current gun list position
+    int gunListPos;
 
     // Timer for shooting
     float ShootTimer;
     float speedOrig;
 
     bool sprinting;
+    bool speedActive = false;
+    bool strengthActive = false;
+    bool healingActive = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -99,11 +111,14 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         CharacterController.Move(PlayerVelocity * Time.deltaTime);
 
         // Handle shooting
-        if (Input.GetButtonDown("Fire1") && ShootTimer >= ShootRate)
+        if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCurr > 0 && ShootTimer >= ShootRate)
         {
             // Handle shooting
             Shoot();
         }
+
+        selectGun();
+        reload();
     }
 
     void Sprint()
@@ -147,6 +162,9 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         // Check if the shoot button is pressed and if the shoot timer has exceeded the shoot rate
         ShootTimer = 0;
 
+        gunList[gunListPos].ammoCurr--;
+        GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
+
         // Declare a RaycastHit variable to store hit information
         RaycastHit hit;
         // Perform a raycast from the camera's position forward
@@ -154,6 +172,9 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
         {
             // Log the name of the hit object
             Debug.Log("Hit: " + hit.collider.name);
+
+            // Instantiate the hit effect at the hit point
+            Instantiate(gunList[gunListPos].hitEffect, hit.point, Quaternion.identity);
 
             // Try to get the IDamage component from the hit object
             IDamage dmg = hit.collider.GetComponent<IDamage>();
@@ -163,6 +184,49 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
                 // Apply damage to the hit object
                 dmg.TakeDamage(ShootDamage);
             }
+        }
+    }
+    void reload()
+    {
+        if (Input.GetButtonDown("Reload") && gunList.Count > 0)
+        {
+            gunList[gunListPos].ammoCurr = gunList[gunListPos].ammoMax;
+            GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
+        }
+    }
+
+    public void getGunStats(gunStats gun)
+    {
+        gunList.Add(gun);
+        gunListPos = gunList.Count - 1;
+
+        changeGun();
+    }
+
+    void changeGun()
+    {
+        ShootDamage = gunList[gunListPos].ShootDamage;
+        ShootDistances = gunList[gunListPos].ShootDistances;
+        ShootRate = gunList[gunListPos].ShootRate;
+
+        gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].gunModel.GetComponent<MeshFilter>().sharedMesh;
+        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gunList[gunListPos].gunModel.GetComponent<MeshRenderer>().sharedMaterial;
+
+        GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
+    }
+
+
+    void selectGun()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && gunListPos < gunList.Count - 1)
+        {
+            gunListPos++;
+            changeGun();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && gunListPos > 0)
+        {
+            gunListPos--;
+            changeGun();
         }
     }
 
@@ -182,7 +246,36 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
 
     public void UpdatePlayerUI()
     {
+        //fill health bar to correct amount
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+
+        //check Speed icon pop up 
+        if (speedActive)
+        {
+            GameManager.instance.speedIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.speedIcon.enabled = false;
+        }
+        //check Strength icon pop up
+        if (strengthActive)
+        {
+            GameManager.instance.strengthIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.strengthIcon.enabled = false;
+        }
+        //check Healing icon pop up
+        if (healingActive)
+        {
+            GameManager.instance.healingIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.healingIcon.enabled = false;
+        }
     }
     public void setSpeed(float nSpeed)
     {
@@ -213,11 +306,23 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     public void healing(int amount)
     {
         HP += amount;
+        healingActive = true;
+        UpdatePlayerUI();
+        StartCoroutine(healingTimer());
+    }
+
+    IEnumerator healingTimer()
+    {
+        yield return new WaitForSeconds(3f);
+        healingActive = false;
         UpdatePlayerUI();
     }
     //Handle speed buff 
     public void faster(int amount)
     {
+        SpeedBuffAmount = amount;
+        speedActive = true;
+        UpdatePlayerUI();
         if (sprinting)
         {
             Speed /= SprintModifier;
@@ -235,8 +340,11 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     IEnumerator FasterTimer(int amount)
     {
         yield return new WaitForSeconds(itemBuffTime);
+        speedActive= false;
+        UpdatePlayerUI();
         if (sprinting)
-        {
+        { 
+
             Speed /= SprintModifier;
             Speed -= amount;
             Speed *= SprintModifier;
@@ -250,17 +358,30 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems
     public void stronger(int amount)
     {
         ShootDamage += amount;
+        strengthActive = true;
         StartCoroutine(StrongerTimer(amount));
     }
     //Handle damage buff timer
     IEnumerator StrongerTimer(int amount)
     {
         yield return new WaitForSeconds(itemBuffTime);
-        ShootDamage -= amount;
-
+        if (ShootDamage != gunList[gunListPos].ShootDamage)
+        {
+            ShootDamage = gunList[gunListPos].ShootDamage;
+        }
+        strengthActive = false;
+        UpdatePlayerUI();
     }
     public bool GetIsSprinting()
     {
         return sprinting;
+    }
+    public bool GetSpeedActive()
+    {
+        return speedActive;
+    }
+    public int GetSpeedBuff()
+    {
+       return SpeedBuffAmount;
     }
 }
