@@ -23,6 +23,13 @@ public class EnemyAI : MonoBehaviour , IDamage
     [SerializeField] Animator anim;
     [SerializeField] int animTranSpeed;
 
+    [SerializeField] AudioSource aud;
+    [SerializeField] AudioClip[] audShoot;
+    [Range(0, 1)][SerializeField] float shootVol;
+    [SerializeField] AudioClip[] audHurt;
+    [Range(0, 1)][SerializeField] float hurtVol;
+    [SerializeField] AudioClip[] audSteps;
+    [Range(0, 1)][SerializeField] float stepsVol;
 
     Color colorOrig;
 
@@ -32,6 +39,7 @@ public class EnemyAI : MonoBehaviour , IDamage
     float stoppingDistanceOrig;
 
     bool playerInRange;
+    bool isPlayingSteps;
 
     Vector3 playerDir;
     Vector3 startingpos;
@@ -39,10 +47,9 @@ public class EnemyAI : MonoBehaviour , IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Start()
-
     {
         colorOrig = model.material.color;
-        GameManager.instance.updateGameGoal(1);
+
         startingpos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
     }
@@ -96,6 +103,10 @@ public class EnemyAI : MonoBehaviour , IDamage
         NavMeshHit navHit;
         NavMesh.SamplePosition(ranPos, out navHit, roamDist, 1);
         agent.SetDestination(navHit.position);
+        if (!isPlayingSteps)
+        {
+            StartCoroutine(playSteps());
+        }
     }
 
 
@@ -105,7 +116,12 @@ public class EnemyAI : MonoBehaviour , IDamage
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
             
         Debug.DrawRay(headPos.position, playerDir);
-            
+
+        if (!isPlayingSteps)
+        {
+            StartCoroutine(playSteps());
+        }
+
         RaycastHit hit;
         if (Physics.Raycast(headPos.position, playerDir, out hit))
         {
@@ -129,6 +145,14 @@ public class EnemyAI : MonoBehaviour , IDamage
         }
         agent.stoppingDistance = 0;
         return false;
+    }
+
+    IEnumerator playSteps()
+    {
+        isPlayingSteps = true;
+        aud.PlayOneShot(audSteps[Random.Range(0, audSteps.Length)], stepsVol);
+        yield return new WaitForSeconds(0.3f);
+        isPlayingSteps = false;
     }
 
     void faceTarget()
@@ -159,12 +183,14 @@ public class EnemyAI : MonoBehaviour , IDamage
         shootTimer = 0;
         Instantiate(bullet, shootPos.position, transform.rotation);
         anim.SetTrigger("Shoot");
+        aud.PlayOneShot(audShoot[Random.Range(0, audShoot.Length)], shootVol);
     }
 
     public void TakeDamage(int amount)
     {
         HP -= amount;
         agent.SetDestination(GameManager.instance.player.transform.position);
+        aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], hurtVol);
 
         if (HP <= 0)
         {

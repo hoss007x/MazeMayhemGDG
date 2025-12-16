@@ -142,6 +142,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         // Check if the sprint button is pressed
         if (Input.GetButtonDown("Sprint"))
         {
+            isSprinting = true;
             sprinting = true;
             // Increase speed when sprint button is pressed
             Speed *= SprintModifier;
@@ -149,6 +150,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         }
         else if(Input.GetButtonUp("Sprint"))
         {
+            isSprinting = false;
             sprinting = false;
             // Reset speed when sprint button is released
             Speed /= SprintModifier;
