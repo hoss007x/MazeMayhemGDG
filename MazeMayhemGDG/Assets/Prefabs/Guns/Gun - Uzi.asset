@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21716731284fae54b8a09acd8cebc6ec, type: 3}
-  m_Name: Gun - Pistol
+  m_Name: Gun - Uzi
   m_EditorClassIdentifier: Assembly-CSharp::gunStats
-  gunModel: {fileID: 1694449805434718, guid: 6f1a7354265853f44b0ed5e2e43676ad, type: 3}
+  gunModel: {fileID: 100010, guid: ff8c9f278b5bc8e4c894e1122f4a81f3, type: 3}
   ShootDamage: 3
   ShootDistances: 51
-  ShootRate: 0.999
-  ammoCurr: 29
-  ammoMax: 30
-  ammoReloadAmount: 10
+  ShootRate: 0.301
+  ammoCurr: 15
+  ammoMax: 45
+  ammoReloadAmount: 15
   hitEffect: {fileID: 1476897492240610364, guid: 5801abf45d614a744b7f86821332fb8f, type: 3}
   shootsound: []
   shootSoundVol: 0

@@ -16,7 +16,7 @@ MonoBehaviour:
   ShootDamage: 6
   ShootDistances: 37
   ShootRate: 1.006
-  ammoCurr: 15
+  ammoCurr: 5
   ammoMax: 15
   ammoReloadAmount: 5
   hitEffect: {fileID: 1476897492240610364, guid: 5801abf45d614a744b7f86821332fb8f, type: 3}
