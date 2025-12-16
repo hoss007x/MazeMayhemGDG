@@ -3,23 +3,31 @@ using UnityEngine;
 
 public class FlipPlatformY : MonoBehaviour
 {
-    [Range(50, 1000)] [SerializeField] float speed;
     [SerializeField] float resetTime;
-    [SerializeField] float degree;
+    [SerializeField] bool oneHundredEighty;
 
     Quaternion startRot;
     Quaternion flippedRot;
 
-    float time;
+    float speed;
+
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         startRot = transform.rotation;
-        flippedRot = startRot * Quaternion.Euler(0,degree,0);
-
+        if (oneHundredEighty)
+        {
+            flippedRot = startRot * Quaternion.Euler(0, 0, 180);
+            speed = 250;
+        }
+        else
+        {
+            flippedRot = startRot * Quaternion.Euler(0, 0, 90);
+            speed = 50;
+        }
         StartCoroutine(RotateRoutine());
-
     }
     IEnumerator RotateRoutine()
     {
