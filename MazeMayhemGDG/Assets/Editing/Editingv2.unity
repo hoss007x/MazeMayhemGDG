@@ -846,7 +846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurrentAI
   Detect: 20
-  FireRate: 15
+  FireRate: 5
   nextFire: 0
   head: {fileID: 541439986}
   barrel: {fileID: 1133035293}

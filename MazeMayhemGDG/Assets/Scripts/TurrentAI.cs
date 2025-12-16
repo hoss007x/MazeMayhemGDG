@@ -11,7 +11,7 @@ public class TurrentAI : MonoBehaviour
 
 
     public Transform head, barrel;
-    public GameObject Projecttile;
+    public GameObject Projectile;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,7 +39,7 @@ public class TurrentAI : MonoBehaviour
 
     void shoot()
     {
-        GameObject projectile = Instantiate(Projecttile, barrel.position, head.rotation);
+        GameObject projectile = Instantiate(Projectile, barrel.position, head.rotation);
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         Destroy(projectile, 10);
         rb.AddForce(head.forward * 500f);
