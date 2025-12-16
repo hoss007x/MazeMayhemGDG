@@ -466,12 +466,23 @@ MonoBehaviour:
   HP: 4
   FOV: 90
   faceTargetSpeed: 5
+<<<<<<< HEAD
+=======
+  roamDist: 0
+  roamPauseTime: 0
+>>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   model: {fileID: 329958513555810549}
   agent: {fileID: 5092061796796983028}
   headPos: {fileID: 2022647405328307365}
   bullet: {fileID: 5963556776153289362, guid: 8a162515d50773642be73cafa2e49018, type: 3}
   shootRate: 0.5
   shootPos: {fileID: 3729333805284236304}
+<<<<<<< HEAD
+=======
+  dropItem: {fileID: 0}
+  anim: {fileID: 40128915342369662}
+  animTranSpeed: 0
+>>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
 --- !u!195 &5092061796796983028
 NavMeshAgent:
   m_ObjectHideFlags: 0

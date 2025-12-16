@@ -1989,9 +1989,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2122557653404189231}
+<<<<<<< HEAD
   - component: {fileID: 7435357496276316157}
   - component: {fileID: 2084866087985379297}
   - component: {fileID: 5009468338579965268}
+=======
+  - component: {fileID: 5009468338579965268}
+  - component: {fileID: 7435357496276316157}
+  - component: {fileID: 2084866087985379297}
+>>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   - component: {fileID: 6271777234657721941}
   m_Layer: 0
   m_Name: moving spikes
@@ -2040,6 +2046,24 @@ Transform:
   - {fileID: 581024580980898716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
+=======
+--- !u!114 &5009468338579965268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927864304586576015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84e627045b429e641aab9a165a4ecc33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovingPlatformsY
+  speed: 0
+  distance: 0
+  resetTime: 0
+>>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
 --- !u!33 &7435357496276316157
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2096,6 +2120,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+<<<<<<< HEAD
 --- !u!114 &5009468338579965268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2111,6 +2136,8 @@ MonoBehaviour:
   speed: 0
   distance: 0
   resetTime: 0
+=======
+>>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
 --- !u!65 &6271777234657721941
 BoxCollider:
   m_ObjectHideFlags: 0
