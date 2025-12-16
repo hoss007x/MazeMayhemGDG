@@ -11,7 +11,7 @@ public class PickupGuns : MonoBehaviour
 
         if (pick != null)
         {
-            gun.ammoCurr = gun.ammoMax;
+            gun.ammoCurr = gun.magSize;
             pick.getGunStats(gun);
             Destroy(gameObject);
         }

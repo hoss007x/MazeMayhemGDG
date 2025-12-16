@@ -190,9 +190,19 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         if (Input.GetButtonDown("Reload") && gunList.Count > 0)
         {
-            gunList[gunListPos].ammoCurr = gunList[gunListPos].ammoMax;
-            gunList[gunListPos].ammoMax -= gunList[gunListPos].ammoReloadAmount;
-            GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
+
+            if (gunList[gunListPos].ammoMax > 0)
+            {
+                int reloadAmount = gunList[gunListPos].magSize - gunList[gunListPos].ammoCurr;
+                gunList[gunListPos].ammoCurr = gunList[gunListPos].magSize;
+                gunList[gunListPos].ammoMax -= reloadAmount;
+                if(gunList[gunListPos].ammoMax < 0)
+                {
+                    gunList[gunListPos].ammoMax = 0;
+                }
+                GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
+            }
+            
         }
     }
 
