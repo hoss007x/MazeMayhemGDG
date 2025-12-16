@@ -448,18 +448,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5425957958633071776, guid: 84996fc3597f0ab40a2e37ffb6fa88e7, type: 3}
-      propertyPath: HP
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5425957958633071776, guid: 84996fc3597f0ab40a2e37ffb6fa88e7, type: 3}
-      propertyPath: Gravity
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 5425957958633071776, guid: 84996fc3597f0ab40a2e37ffb6fa88e7, type: 3}
-      propertyPath: itemBuffTime
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
