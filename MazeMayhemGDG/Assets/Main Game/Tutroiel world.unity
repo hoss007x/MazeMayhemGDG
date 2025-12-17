@@ -738,10 +738,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5270695524712637940, guid: 84996fc3597f0ab40a2e37ffb6fa88e7, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 57343
+      objectReference: {fileID: 0}
     - target: {fileID: 5425957958633071776, guid: 84996fc3597f0ab40a2e37ffb6fa88e7, type: 3}
       propertyPath: aud
       value: 
       objectReference: {fileID: 962209959}
+    - target: {fileID: 5425957958633071776, guid: 84996fc3597f0ab40a2e37ffb6fa88e7, type: 3}
+      propertyPath: HPMax
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5425957958633071776, guid: 84996fc3597f0ab40a2e37ffb6fa88e7, type: 3}
       propertyPath: hurtVol
       value: 0.034
@@ -1705,7 +1713,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6115443956448308242, guid: cd3fbc7ff41510842bfa416e8f7f9bc4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7481123686376728849, guid: cd3fbc7ff41510842bfa416e8f7f9bc4, type: 3}
       propertyPath: m_fontColor.b

@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     // Movement parameters
     // Player hit points
     [SerializeField] int HP;
+    [SerializeField] int HPMax;
     // Base movement speed
     [SerializeField] float Speed;
     // Sprint modifier
@@ -123,6 +124,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
         // Handle jumping
         Jump();
+
         // Apply vertical velocity
         CharacterController.Move(PlayerVelocity * Time.deltaTime);
 
@@ -371,6 +373,10 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     public void healing(int amount)
     {
         HP += amount;
+        if (HP > HPMax)
+        {
+            HP = HPMax;
+        }
         healingActive = true;
         UpdatePlayerUI();
         StartCoroutine(healingTimer());
@@ -424,6 +430,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         ShootDamage += amount;
         strengthActive = true;
+        UpdatePlayerUI();
         StartCoroutine(StrongerTimer(amount));
     }
     //Handle damage buff timer
