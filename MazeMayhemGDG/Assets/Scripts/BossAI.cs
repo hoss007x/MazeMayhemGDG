@@ -4,55 +4,76 @@ using System.Collections;
 
 public class BossAI : MonoBehaviour , IDamage
 {
+
+    [SerializeField] int HP;
+    [SerializeField] int FOV;
+    [SerializeField] int faceTargetSpeed;
     [SerializeField] int roamDist;
     [SerializeField] int roamPauseTime;
-    float roamTimer;
-    bool playerInRange;
 
     [SerializeField] Renderer model;
+    [SerializeField] NavMeshAgent agent;
+    [SerializeField] Transform headPos;
 
-    Vector3 startingpos;
+    [SerializeField] GameObject bullet;
+    [SerializeField] float shootRate;
+    [SerializeField] Transform shootPos;
+
+    [SerializeField] GameObject dropItem;
+
+    [SerializeField] Animator anim;
+    [SerializeField] int animTranSpeed;
+
 
     Color colorOrig;
 
-    public enum BossState
+    float shootTimer;
+    float angleToPlayer;
+    float roamTimer;
+    float stoppingDistanceOrig;
+
+    bool playerInRange;
+    bool isPlayingSteps;
+
+    Vector3 playerDir;
+    Vector3 startingpos;
+    Vector3 itemPOS;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    void Start()
     {
-        Idle,
-        Chasing,
-        Attacking,
-        Enraged,
-        Dead
+        colorOrig = model.material.color;
+
+        startingpos = transform.position;
+        stoppingDistanceOrig = agent.stoppingDistance;
     }
 
-    [Header("References")]
-    public Transform Player;
-    public NavMeshAgent Agent;
-    public Animator animator;
 
-    [Header("Health")]
-    public float maxHealth = 100;
-    public float currentHealth;
+    // Update is called once per frame
 
-    [Header("Detection Ranges")]
-    public float detectionRange = 30f;
-    public float attackRange = 5f;
+    void Update()
 
-    [Header("Attack")]
-    public float meleeDamage = 10;
-    public float attackCooldown = 2f;
+    {
+        shootTimer += Time.deltaTime;
 
-    [Header("Enrage Phase")]
-    public float enrageHealthThreshold = 50;
-    public float enrageSpeedMultiplier = 1.5f;
-    public float enrageAttackMultiplier = 1.5f;
+        locomotion();
 
-    private BossState currentState;
-    private float attackTimer;
-    private bool isEnraged;
+        if (agent.remainingDistance < 0.01f)
+            roamTimer += Time.deltaTime;
 
+        if (playerInRange && canSeePlayer())
+        {
+            checkRoam();
+        }
+        else if (!playerInRange)
+        {
+            checkRoam();
+        }
+    }
     void checkRoam()
     {
-        if (Agent.remainingDistance < 0.01f && roamTimer >= roamPauseTime)
+        if (agent.remainingDistance < 0.01f && roamTimer >= roamPauseTime)
         {
             roam();
         }
@@ -60,157 +81,66 @@ public class BossAI : MonoBehaviour , IDamage
 
     void locomotion()
     {
-        float agentSpeedCur = Agent.velocity.normalized.magnitude;
-        float agentSpeedAnim = animator.GetFloat("Speed");
+        float agentSpeedCur = agent.velocity.normalized.magnitude;
+        float agentSpeedAnim = anim.GetFloat("Speed");
 
+        anim.SetFloat("Speed", Mathf.MoveTowards(agentSpeedAnim, agentSpeedCur, Time.deltaTime * animTranSpeed));
     }
 
     void roam()
     {
         roamTimer = 0;
-        Agent.stoppingDistance = 0;
+        agent.stoppingDistance = 0;
 
         Vector3 ranPos = Random.insideUnitSphere * roamDist;
         ranPos += startingpos;
 
         NavMeshHit navHit;
         NavMesh.SamplePosition(ranPos, out navHit, roamDist, 1);
-        Agent.SetDestination(navHit.position);
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        currentHealth = maxHealth;
-        currentState = BossState.Idle;
-        Agent = GetComponent<NavMeshAgent>();
+        agent.SetDestination(navHit.position);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    bool canSeePlayer()
     {
-        if (currentState == BossState.Dead)
-            return;
+        playerDir = GameManager.instance.player.transform.position - headPos.position;
+        angleToPlayer = Vector3.Angle(playerDir, transform.forward);
 
-        attackTimer -= Time.deltaTime;
+        Debug.DrawRay(headPos.position, playerDir);
 
-        float distanceToPlayer = Vector3.Distance(transform.position, Player.position);
 
-        switch (currentState)
+        RaycastHit hit;
+        if (Physics.Raycast(headPos.position, playerDir, out hit))
         {
-            case BossState.Idle:
-                if (distanceToPlayer <= detectionRange)
-                {
-                    currentState = BossState.Chasing;
-                }
-                break;
+            Debug.Log(hit.collider.name);
 
-            case BossState.Chasing:
-                Agent.SetDestination(Player.position);
+            if (angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
+            {
+                agent.SetDestination(GameManager.instance.player.transform.position);
 
-                if (distanceToPlayer <= attackRange)
+                if (shootTimer >= shootRate)
                 {
-                    currentState = BossState.Attacking;
+                    shoot();
                 }
-                else if (distanceToPlayer > detectionRange)
-                {
-                    currentState = BossState.Idle;
-                }
-                break;
 
-            case BossState.Attacking:
-                Agent.ResetPath();
-                transform.LookAt(Player);
+                if (agent.remainingDistance <= stoppingDistanceOrig)
+                    faceTarget();
 
-                if (distanceToPlayer > attackRange)
-                {
-                    currentState = BossState.Chasing;
-                    return;
-                }
-                if (attackTimer <= 0)
-                {
-                    AttackPlayer();
-                    attackTimer = attackCooldown;
-                }
-                break;
-
-            case BossState.Enraged:
-                Agent.SetDestination(Player.position);
-
-                if (distanceToPlayer <= attackRange && attackTimer <= 0)
-                {
-                    AttackPlayer();
-                    attackTimer = attackCooldown / 2;
-                }
-                break;
+                agent.stoppingDistance = stoppingDistanceOrig;
+                return true;
+            }
         }
-
-        CheckEnrage();
-
-        UpdateAnimations();
-
+        agent.stoppingDistance = 0;
+        return false;
     }
 
 
-    void ChangeState(BossState newState)
+    void faceTarget()
     {
-               currentState = newState;
-
-        if (animator != null)
-        {
-            animator.SetInteger("State", (int)newState);
-        }
-    }
- 
-    void AttackPlayer()
-    {
-        // Implement attack logic here (e.g., reduce player health)
-        Debug.Log("Boss attacks the player for " + meleeDamage + " damage.");
-
-        if (Random.value > 0.5f)
-        {
-            MeleeAttack();
-        }
+        Quaternion rot = Quaternion.LookRotation(new Vector3(playerDir.x, transform.position.y, playerDir.z));
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, faceTargetSpeed * Time.deltaTime);
     }
 
-    void MeleeAttack()
-    {
-        // Implement melee attack logic here
-        Debug.Log("Boss performs a melee attack.");
-    }
-
-    void CheckEnrage()
-    {
-        if (!isEnraged && currentHealth <= enrageHealthThreshold)
-        {
-            isEnraged = true;
-            Agent.speed *= enrageSpeedMultiplier;
-            ChangeState(BossState.Enraged);
-        }
-    }
-
-    void Die()
-    {
-        currentState = BossState.Dead;
-        Agent.isStopped = true;
-
-        if (animator != null)
-            animator.SetTrigger("Die");
-
-        GameManager.instance.updateGameGoal(-1);
-        Destroy(gameObject, 5f);
-    }
-
-    void UpdateAnimations()
-    {
-        if (animator == null)
-            return;
-
-        float speed = Agent.velocity.magnitude;
-        animator.SetFloat("Speed", speed);
-
-        bool attacking = currentState == BossState.Attacking || currentState == BossState.Enraged;
-        animator.SetBool("IsAttacking", attacking);
-    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -224,23 +154,40 @@ public class BossAI : MonoBehaviour , IDamage
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            Agent.stoppingDistance = 0;
+            agent.stoppingDistance = 0;
         }
     }
+
+
+    void shoot()
+    {
+        shootTimer = 0;
+        Instantiate(bullet, shootPos.position, transform.rotation);
+        anim.SetTrigger("Shoot");
+       
+    }
+
     public void TakeDamage(int amount)
     {
-       currentHealth -= amount;
-        Agent.SetDestination(GameManager.instance.player.transform.position);
+        HP -= amount;
+        agent.SetDestination(GameManager.instance.player.transform.position);
 
-        if (currentHealth <= 0)
+        if (HP <= 0)
         {
-
-            Destroy(gameObject);
-            GameManager.instance.youWin();
-            Die();
+            
+            GameManager.instance.updateGameGoal(-1);
+            if (dropItem != null)
+            {
+                itemPOS = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+                Instantiate(dropItem, itemPOS, transform.rotation);
+               
+            }
+            anim.SetTrigger("Dead");
+            Destroy(gameObject, 2f);
         }
         else
         {
+           
             StartCoroutine(flashRed());
         }
     }
@@ -251,5 +198,9 @@ public class BossAI : MonoBehaviour , IDamage
         yield return new WaitForSeconds(0.1f);
         model.material.color = colorOrig;
     }
+
+
+
+
 
 }
