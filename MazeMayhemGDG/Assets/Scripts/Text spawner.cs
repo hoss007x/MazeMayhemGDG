@@ -50,6 +50,7 @@ public class Textspawner : MonoBehaviour
     private void HideText()
     {
         Destroy(TextSpawner);
-      
+        Text.gameObject.SetActive(false);
+
     }
 }

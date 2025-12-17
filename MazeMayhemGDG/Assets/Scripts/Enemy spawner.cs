@@ -14,7 +14,7 @@ public class Enemyspawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameManager.instance.updateGameGoal(spawnAmount);
+        startSpawning = true;
     }
 
     // Update is called once per frame
@@ -30,18 +30,11 @@ public class Enemyspawner : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            startSpawning = true;
-        }
-    }
-
     void Spawn()
     {
         spawnTimer = 0;
         spawnedCount++;
         Instantiate(objectToSpawn, transform.position, Quaternion.identity);
+        GameManager.instance.updateGameGoal(1);
     }
 }
