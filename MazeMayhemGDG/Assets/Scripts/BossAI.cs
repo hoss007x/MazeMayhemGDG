@@ -234,7 +234,9 @@ public class BossAI : MonoBehaviour , IDamage
 
         if (currentHealth <= 0)
         {
+
             Destroy(gameObject);
+            GameManager.instance.youWin();
             Die();
         }
         else
