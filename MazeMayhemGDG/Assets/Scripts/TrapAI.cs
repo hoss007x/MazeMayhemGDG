@@ -61,7 +61,7 @@ public class TrapAI : MonoBehaviour
         {
             Debug.Log(hit.collider.name);
 
-            if(angleToPlayer <=FOV && hit.collider.CompareTag("Player"))
+            if(angleToPlayer <= FOV && hit.collider.CompareTag("Player"))
             {
                if(shootTimer >= shootRate)
                 {

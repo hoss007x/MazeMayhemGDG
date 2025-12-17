@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     // Movement parameters
     // Player hit points
     [SerializeField] int HP;
+    [SerializeField] int HPMax;
     // Base movement speed
     [SerializeField] float Speed;
     // Sprint modifier
@@ -123,6 +124,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
         // Handle jumping
         Jump();
+
         // Apply vertical velocity
         CharacterController.Move(PlayerVelocity * Time.deltaTime);
 
@@ -193,6 +195,10 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
     void Shoot()
     {
+        if (GameManager.instance.isPaused == true)
+        {
+            return;
+        }
         // Check if the shoot button is pressed and if the shoot timer has exceeded the shoot rate
         ShootTimer = 0;
 
@@ -223,22 +229,29 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     }
     void reload()
     {
-        if (Input.GetButtonDown("Reload") && gunList.Count > 0)
+        if (GameManager.instance.isPaused == true)
         {
-
-            if (gunList[gunListPos].ammoMax > 0)
-            {
-                int reloadAmount = gunList[gunListPos].magSize - gunList[gunListPos].ammoCurr;
-                gunList[gunListPos].ammoCurr = gunList[gunListPos].magSize;
-                gunList[gunListPos].ammoMax -= reloadAmount;
-                if(gunList[gunListPos].ammoMax < 0)
-                {
-                    gunList[gunListPos].ammoMax = 0;
-                }
-                GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
-            }
-            
+            return;
         }
+
+        if (Input.GetButtonDown("Reload") && gunList.Count > 0)
+            {
+
+                if (gunList[gunListPos].ammoMax > 0)
+                {
+                    int reloadAmount = gunList[gunListPos].magSize - gunList[gunListPos].ammoCurr;
+                    gunList[gunListPos].ammoCurr = gunList[gunListPos].magSize;
+                    gunList[gunListPos].ammoMax -= reloadAmount;
+                    if (gunList[gunListPos].ammoMax < 0)
+                    {
+                        gunList[gunListPos].ammoMax = 0;
+                    }
+                    GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
+                }
+
+            }
+        
+           
     }
 
     public void getGunStats(gunStats gun)
@@ -264,6 +277,11 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
     void selectGun()
     {
+        if (GameManager.instance.isPaused == true)
+        {
+            return;
+        }
+        
         if (Input.GetAxis("Mouse ScrollWheel") > 0 && gunListPos < gunList.Count - 1)
         {
             gunListPos++;
@@ -274,6 +292,8 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
             gunListPos--;
             changeGun();
         }
+        
+        
     }
 
     public void TakeDamage(int amount)
@@ -353,6 +373,10 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     public void healing(int amount)
     {
         HP += amount;
+        if (HP > HPMax)
+        {
+            HP = HPMax;
+        }
         healingActive = true;
         UpdatePlayerUI();
         StartCoroutine(healingTimer());
@@ -406,6 +430,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         ShootDamage += amount;
         strengthActive = true;
+        UpdatePlayerUI();
         StartCoroutine(StrongerTimer(amount));
     }
     //Handle damage buff timer

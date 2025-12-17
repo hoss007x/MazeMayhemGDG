@@ -182,12 +182,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   HP: 10
+  HPMax: 10
   Speed: 15
   SprintModifier: 2
   JumpSpeed: 15
   MaxJumps: 1
   Gravity: 35
-  itemBuffTime: 0
+  itemBuffTime: 5
   gunList: []
   gunModel: {fileID: 2498787643163816795}
   ShootDamage: 1
@@ -488,7 +489,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 8191
+    m_Bits: 57343
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
