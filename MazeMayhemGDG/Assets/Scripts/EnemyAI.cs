@@ -195,7 +195,7 @@ public class EnemyAI : MonoBehaviour , IDamage
 
         if (HP <= 0)
         {
-            GameManager.instance.updateGameGoal(-1);
+            GameManager.instance.updateGameGoal(1);
             if(dropItem != null)
             {
                 itemPOS = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
