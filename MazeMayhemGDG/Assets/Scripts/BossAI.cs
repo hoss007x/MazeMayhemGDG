@@ -183,13 +183,23 @@ public class BossAI : MonoBehaviour , IDamage
                
             }
             anim.SetTrigger("Dead");
-            Destroy(gameObject, 2f);
+
+            // You win condition
+            Invoke("youWin", 2f);
+            
         }
         else
         {
            
             StartCoroutine(flashRed());
         }
+    }
+
+    private void youWin()
+    {
+
+        GameManager.instance.youWin();
+        Destroy(gameObject);
     }
 
     IEnumerator flashRed()
