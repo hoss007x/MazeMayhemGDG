@@ -50,9 +50,9 @@ MonoBehaviour:
   type: 0
   rb: {fileID: -2542579253563627663}
   damageAmount: 1
-  speed: 3
+  speed: 45
   damageRate: 0
-  destroyTime: 5
+  destroyTime: 3
 --- !u!135 &5232358502685980376
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -153,7 +153,7 @@ TrailRenderer:
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.05
     widthCurve:
       serializedVersion: 2
       m_Curve:
