@@ -66,11 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-<<<<<<< HEAD
-  - {fileID: 2100000, guid: 28f0b13c7e9707746b5e0b3336181560, type: 2}
-=======
   - {fileID: 2100000, guid: 124674cf07a479740871e01a76336390, type: 2}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -159,11 +155,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-<<<<<<< HEAD
-  - {fileID: 2100000, guid: 28f0b13c7e9707746b5e0b3336181560, type: 2}
-=======
   - {fileID: 2100000, guid: 124674cf07a479740871e01a76336390, type: 2}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -252,11 +244,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-<<<<<<< HEAD
-  - {fileID: 2100000, guid: 28f0b13c7e9707746b5e0b3336181560, type: 2}
-=======
   - {fileID: 2100000, guid: 124674cf07a479740871e01a76336390, type: 2}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -313,10 +301,7 @@ Transform:
   - {fileID: 4306242400190624}
   - {fileID: 4855566107710416}
   - {fileID: 4594675243249436}
-<<<<<<< HEAD
-=======
   - {fileID: 7062865014382072488}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &33265667909663144
@@ -352,11 +337,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-<<<<<<< HEAD
-  - {fileID: 2100000, guid: 28f0b13c7e9707746b5e0b3336181560, type: 2}
-=======
   - {fileID: 2100000, guid: 124674cf07a479740871e01a76336390, type: 2}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -379,8 +360,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
-<<<<<<< HEAD
-=======
 --- !u!1001 &7067349024547896654
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -463,4 +442,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4523601712017382, guid: 49535f27af2648646a94c1f9918737d6, type: 3}
   m_PrefabInstance: {fileID: 7067349024547896654}
   m_PrefabAsset: {fileID: 0}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f

@@ -16,13 +16,6 @@ MonoBehaviour:
   ShootDamage: 1
   ShootDistances: 47
   ShootRate: 0.107
-<<<<<<< HEAD
-  ammoCurr: 47
-  ammoMax: 50
-  hitEffect: {fileID: 1476897492240610364, guid: 5801abf45d614a744b7f86821332fb8f, type: 3}
-  shootsound: []
-  shootSoundVol: 0
-=======
   ammoMax: 75
   magSize: 25
   ammoCurr: 7
@@ -30,4 +23,3 @@ MonoBehaviour:
   shootsound:
   - {fileID: 8300000, guid: b0c640e224f61bc438548f52bc604a94, type: 3}
   shootSoundVol: 0.042
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f

@@ -20,8 +20,6 @@ public class EnemyAI : MonoBehaviour , IDamage
 
     [SerializeField] GameObject dropItem;
 
-<<<<<<< HEAD
-=======
     [SerializeField] Animator anim;
     [SerializeField] int animTranSpeed;
 
@@ -32,7 +30,6 @@ public class EnemyAI : MonoBehaviour , IDamage
     [Range(0, 1)][SerializeField] float hurtVol;
     [SerializeField] AudioClip[] audSteps;
     [Range(0, 1)][SerializeField] float stepsVol;
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
 
     Color colorOrig;
 
@@ -52,11 +49,7 @@ public class EnemyAI : MonoBehaviour , IDamage
     void Start()
     {
         colorOrig = model.material.color;
-<<<<<<< HEAD
-        GameManager.instance.updateGameGoal(1);
-=======
 
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
         startingpos = transform.position;
         stoppingDistanceOrig = agent.stoppingDistance;
     }
@@ -69,11 +62,8 @@ public class EnemyAI : MonoBehaviour , IDamage
     {
         shootTimer += Time.deltaTime;
 
-<<<<<<< HEAD
-=======
         locomotion();
 
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
         if (agent.remainingDistance < 0.01f)
             roamTimer += Time.deltaTime;
 
@@ -94,8 +84,6 @@ public class EnemyAI : MonoBehaviour , IDamage
         }
     }
 
-<<<<<<< HEAD
-=======
     void locomotion()
     {
         float agentSpeedCur = agent.velocity.normalized.magnitude;
@@ -104,7 +92,6 @@ public class EnemyAI : MonoBehaviour , IDamage
         anim.SetFloat("Speed", Mathf.MoveTowards(agentSpeedAnim, agentSpeedCur, Time.deltaTime * animTranSpeed));
     }
 
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
     void roam()
     {
         roamTimer = 0;
@@ -116,13 +103,10 @@ public class EnemyAI : MonoBehaviour , IDamage
         NavMeshHit navHit;
         NavMesh.SamplePosition(ranPos, out navHit, roamDist, 1);
         agent.SetDestination(navHit.position);
-<<<<<<< HEAD
-=======
         if (!isPlayingSteps)
         {
             StartCoroutine(playSteps());
         }
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
     }
 
 

@@ -7,19 +7,11 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_Name: Base Layer
-  m_ChildStates:
-  - serializedVersion: 1
-    m_State: {fileID: 6419716945514865712}
-    m_Position: {x: 290, y: 120, z: 0}
-=======
   m_Name: speed
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2029731978124996270}
     m_Position: {x: 450.19275, y: 92.38431, z: 0}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -29,11 +21,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-<<<<<<< HEAD
-  m_DefaultState: {fileID: 6419716945514865712}
-=======
   m_DefaultState: {fileID: 2029731978124996270}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -42,12 +30,6 @@ AnimatorController:
   m_PrefabAsset: {fileID: 0}
   m_Name: Enemy 1
   serializedVersion: 5
-<<<<<<< HEAD
-  m_AnimatorParameters: []
-  m_AnimatorLayers:
-  - serializedVersion: 5
-    m_Name: Base Layer
-=======
   m_AnimatorParameters:
   - m_Name: Speed
     m_Type: 1
@@ -64,7 +46,6 @@ AnimatorController:
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: speed
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
     m_StateMachine: {fileID: -6986947792797292933}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -75,9 +56,6 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
-<<<<<<< HEAD
---- !u!1102 &6419716945514865712
-=======
   - serializedVersion: 5
     m_Name: shoot
     m_StateMachine: {fileID: 2570346830678791426}
@@ -91,16 +69,12 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
 --- !u!1102 &659174035622526621
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_Name: infantry_combat_idle
-=======
   m_Name: infantry_combat_shoot
   m_Speed: 1
   m_CycleOffset: 0
@@ -129,7 +103,6 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: speed
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -142,18 +115,12 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-<<<<<<< HEAD
-  m_Motion: {fileID: 7400000, guid: e9fa0cd70df4a414ea410a82fba042e6, type: 3}
-=======
   m_Motion: {fileID: 2594066955126455458}
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
-<<<<<<< HEAD
-=======
 --- !u!1107 &2570346830678791426
 AnimatorStateMachine:
   serializedVersion: 6
@@ -284,4 +251,3 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f

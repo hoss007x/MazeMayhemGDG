@@ -65,12 +65,9 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     bool speedActive = false;
     bool strengthActive = false;
     bool healingActive = false;
-<<<<<<< HEAD
-=======
 
     bool isPlayingSteps;
     bool isSprinting;
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -201,10 +198,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
         gunList[gunListPos].ammoCurr--;
         GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
-<<<<<<< HEAD
-=======
         aud.PlayOneShot(gunList[gunListPos].shootsound[Random.Range(0, gunList[gunListPos].shootsound.Length)], gunList[gunListPos].shootSoundVol);
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
 
         // Declare a RaycastHit variable to store hit information
         RaycastHit hit;
@@ -231,10 +225,6 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         if (Input.GetButtonDown("Reload") && gunList.Count > 0)
         {
-<<<<<<< HEAD
-            gunList[gunListPos].ammoCurr = gunList[gunListPos].ammoMax;
-            GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
-=======
 
             if (gunList[gunListPos].ammoMax > 0)
             {
@@ -248,7 +238,6 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
                 GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
             }
             
->>>>>>> 6d2dff04f4039c2e79427fdd9b293c83cb55d88f
         }
     }
 
