@@ -10,6 +10,7 @@ public class gunStats : ScriptableObject
     [Range(0.1f, 3)][SerializeField] public float ShootRate;
     [Range(0, 100)][SerializeField] public int ammoMax;
     [Range(1, 100)][SerializeField] public int magSize;
+    [Range(1, 100)][SerializeField] public int maxAmmmoAmount;
 
 
     public int ammoCurr;
