@@ -43,6 +43,7 @@ public class EnemyAI : MonoBehaviour , IDamage
 
     Vector3 playerDir;
     Vector3 startingpos;
+    Vector3 itemPOS;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -189,14 +190,17 @@ public class EnemyAI : MonoBehaviour , IDamage
     public void TakeDamage(int amount)
     {
         HP -= amount;
-        agent.SetDestination(GameManager.instance.player.transform.position);
         aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], hurtVol);
+        agent.SetDestination(GameManager.instance.player.transform.position);
 
         if (HP <= 0)
         {
             GameManager.instance.updateGameGoal(-1);
             if(dropItem != null)
-                Instantiate(dropItem, transform.position, transform.rotation);
+            {
+                itemPOS = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+                Instantiate(dropItem, itemPOS, transform.rotation);
+            }
 
             Destroy(gameObject);
         }
