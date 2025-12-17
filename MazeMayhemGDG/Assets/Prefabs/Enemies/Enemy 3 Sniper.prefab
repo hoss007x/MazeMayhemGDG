@@ -475,10 +475,10 @@ MonoBehaviour:
   bullet: {fileID: 5963556776153289362, guid: 58d86a362215c654d948a126c85bfba0, type: 3}
   shootRate: 1
   shootPos: {fileID: 3729333805284236304}
-  dropItem: {fileID: 240189000253828295, guid: 33a036bede2d03446963f07abf0c8b5f, type: 3}
-  anim: {fileID: 0}
+  dropItem: {fileID: 0}
+  anim: {fileID: 40128915342369662}
   animTranSpeed: 1
-  aud: {fileID: 0}
+  aud: {fileID: 8047967968113894918}
   audShoot:
   - {fileID: 8300000, guid: aef89a197f2bde5448623f05b2d06cbc, type: 3}
   shootVol: 0.203
