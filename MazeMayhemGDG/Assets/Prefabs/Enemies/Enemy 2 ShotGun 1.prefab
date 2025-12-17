@@ -476,9 +476,9 @@ MonoBehaviour:
   shootRate: 0.5
   shootPos: {fileID: 3729333805284236304}
   dropItem: {fileID: 0}
-  anim: {fileID: 0}
+  anim: {fileID: 40128915342369662}
   animTranSpeed: 1
-  aud: {fileID: 0}
+  aud: {fileID: 1583687794867931281}
   audShoot:
   - {fileID: 8300000, guid: aef89a197f2bde5448623f05b2d06cbc, type: 3}
   shootVol: 0.203
