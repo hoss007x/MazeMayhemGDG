@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     // Movement parameters
     // Player hit points
     [SerializeField] int HP;
+    [SerializeField] int HPMax;
     // Base movement speed
     [SerializeField] float Speed;
     // Sprint modifier
@@ -35,6 +36,14 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     // Time between shots
     [SerializeField] float ShootRate;
 
+    [SerializeField] AudioSource aud;
+    [SerializeField] AudioClip[] audjump;
+    [Range(0, 1)][SerializeField] float jumpVol;
+    [SerializeField] AudioClip[] audHurt;
+    [Range(0, 1)][SerializeField] float hurtVol;
+    [SerializeField] AudioClip[] audSteps;
+    [Range(0, 1)][SerializeField] float stepsVol;
+
     // Movement direction
     Vector3 MoveDirection;
     // Player velocity
@@ -54,7 +63,12 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     float speedOrig;
 
     bool sprinting;
-    bool speedActive;
+    bool speedActive = false;
+    bool strengthActive = false;
+    bool healingActive = false;
+
+    bool isPlayingSteps;
+    bool isSprinting;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -86,6 +100,11 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         // Check if the player is grounded
         if (CharacterController.isGrounded)
         {
+            if (!isPlayingSteps && MoveDirection.magnitude > 0)
+            {
+                StartCoroutine(playSteps());
+            }
+
             // Reset vertical velocity when grounded
             PlayerVelocity = Vector3.zero;
             // Reset jump count when grounded
@@ -105,6 +124,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
         // Handle jumping
         Jump();
+
         // Apply vertical velocity
         CharacterController.Move(PlayerVelocity * Time.deltaTime);
 
@@ -124,6 +144,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         // Check if the sprint button is pressed
         if (Input.GetButtonDown("Sprint"))
         {
+            isSprinting = true;
             sprinting = true;
             // Increase speed when sprint button is pressed
             Speed *= SprintModifier;
@@ -131,6 +152,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         }
         else if(Input.GetButtonUp("Sprint"))
         {
+            isSprinting = false;
             sprinting = false;
             // Reset speed when sprint button is released
             Speed /= SprintModifier;
@@ -142,12 +164,28 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         return SprintModifier;
     }
 
+    IEnumerator playSteps()
+    {
+        isPlayingSteps = true;
+        aud.PlayOneShot(audSteps[Random.Range(0, audSteps.Length)], stepsVol);
+        if (isSprinting)
+        {
+            yield return new WaitForSeconds(0.3f);
+        }
+        else if (!isSprinting)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        isPlayingSteps = false;
+    }
+
     // Handle jumping
     void Jump()
     {
         // Check if the jump button is pressed and if the player can jump
         if (Input.GetButtonDown("Jump") && JumpCount < MaxJumps)
         {
+            aud.PlayOneShot(audjump[Random.Range(0, audjump.Length)], jumpVol);
             // Apply jump speed to the player's vertical velocity
             PlayerVelocity.y = JumpSpeed;
             // Increment jump count
@@ -157,10 +195,16 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
     void Shoot()
     {
+        if (GameManager.instance.isPaused == true)
+        {
+            return;
+        }
         // Check if the shoot button is pressed and if the shoot timer has exceeded the shoot rate
         ShootTimer = 0;
 
         gunList[gunListPos].ammoCurr--;
+        GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
+        aud.PlayOneShot(gunList[gunListPos].shootsound[Random.Range(0, gunList[gunListPos].shootsound.Length)], gunList[gunListPos].shootSoundVol);
 
         // Declare a RaycastHit variable to store hit information
         RaycastHit hit;
@@ -185,10 +229,29 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     }
     void reload()
     {
-        if (Input.GetButtonDown("Reload") && gunList.Count > 0)
+        if (GameManager.instance.isPaused == true)
         {
-            gunList[gunListPos].ammoCurr = gunList[gunListPos].ammoMax;
+            return;
         }
+
+        if (Input.GetButtonDown("Reload") && gunList.Count > 0)
+            {
+
+                if (gunList[gunListPos].ammoMax > 0)
+                {
+                    int reloadAmount = gunList[gunListPos].magSize - gunList[gunListPos].ammoCurr;
+                    gunList[gunListPos].ammoCurr = gunList[gunListPos].magSize;
+                    gunList[gunListPos].ammoMax -= reloadAmount;
+                    if (gunList[gunListPos].ammoMax < 0)
+                    {
+                        gunList[gunListPos].ammoMax = 0;
+                    }
+                    GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
+                }
+
+            }
+        
+           
     }
 
     public void getGunStats(gunStats gun)
@@ -208,12 +271,17 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].gunModel.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterial = gunList[gunListPos].gunModel.GetComponent<MeshRenderer>().sharedMaterial;
 
-
+        GameManager.instance.updateAmmoCount(gunList[gunListPos].ammoMax, gunList[gunListPos].ammoCurr);
     }
 
 
     void selectGun()
     {
+        if (GameManager.instance.isPaused == true)
+        {
+            return;
+        }
+        
         if (Input.GetAxis("Mouse ScrollWheel") > 0 && gunListPos < gunList.Count - 1)
         {
             gunListPos++;
@@ -222,16 +290,15 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
         else if (Input.GetAxis("Mouse ScrollWheel") < 0 && gunListPos > 0)
         {
             gunListPos--;
-
             changeGun();
-
         }
-
-
+        
+        
     }
 
     public void TakeDamage(int amount)
     {
+        aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], hurtVol);
         // Remove an amount from the HP
         HP -= amount;
         UpdatePlayerUI();
@@ -246,7 +313,36 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
 
     public void UpdatePlayerUI()
     {
+        //fill health bar to correct amount
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+
+        //check Speed icon pop up 
+        if (speedActive)
+        {
+            GameManager.instance.speedIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.speedIcon.enabled = false;
+        }
+        //check Strength icon pop up
+        if (strengthActive)
+        {
+            GameManager.instance.strengthIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.strengthIcon.enabled = false;
+        }
+        //check Healing icon pop up
+        if (healingActive)
+        {
+            GameManager.instance.healingIcon.enabled = true;
+        }
+        else
+        {
+            GameManager.instance.healingIcon.enabled = false;
+        }
     }
     public void setSpeed(float nSpeed)
     {
@@ -277,6 +373,19 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     public void healing(int amount)
     {
         HP += amount;
+        if (HP > HPMax)
+        {
+            HP = HPMax;
+        }
+        healingActive = true;
+        UpdatePlayerUI();
+        StartCoroutine(healingTimer());
+    }
+
+    IEnumerator healingTimer()
+    {
+        yield return new WaitForSeconds(3f);
+        healingActive = false;
         UpdatePlayerUI();
     }
     //Handle speed buff 
@@ -284,6 +393,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         SpeedBuffAmount = amount;
         speedActive = true;
+        UpdatePlayerUI();
         if (sprinting)
         {
             Speed /= SprintModifier;
@@ -302,6 +412,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         yield return new WaitForSeconds(itemBuffTime);
         speedActive= false;
+        UpdatePlayerUI();
         if (sprinting)
         { 
 
@@ -318,14 +429,20 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     public void stronger(int amount)
     {
         ShootDamage += amount;
+        strengthActive = true;
+        UpdatePlayerUI();
         StartCoroutine(StrongerTimer(amount));
     }
     //Handle damage buff timer
     IEnumerator StrongerTimer(int amount)
     {
         yield return new WaitForSeconds(itemBuffTime);
-        ShootDamage -= amount;
-
+        if (ShootDamage != gunList[gunListPos].ShootDamage)
+        {
+            ShootDamage = gunList[gunListPos].ShootDamage;
+        }
+        strengthActive = false;
+        UpdatePlayerUI();
     }
     public bool GetIsSprinting()
     {
