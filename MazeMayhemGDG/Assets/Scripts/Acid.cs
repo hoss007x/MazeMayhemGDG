@@ -53,12 +53,19 @@ public class Acid : MonoBehaviour
        for (time = 0; time < residualDamageTime;  time += Time.deltaTime)
         {
             time += Time.deltaTime;
-
+            StartCoroutine(screenFlashAcid());
             rD.TakeDamage(damageAmount);
             yield return new WaitForSeconds(damageRate);
         }
        
      
+    }
+
+    IEnumerator screenFlashAcid()
+    {
+        GameManager.instance.playerAcidPanel.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerAcidPanel.SetActive(false);
     }
 
 }
