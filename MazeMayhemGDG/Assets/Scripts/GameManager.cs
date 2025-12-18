@@ -16,8 +16,10 @@ public class GameManager : MonoBehaviour
     public TMP_Text KeyCountText;
     public TMP_Text AmmoMaxCount;
     public TMP_Text AmmoLeftCount;
+    public TMP_Text tut;
     public Image playerHPBar;
     public GameObject playerDamagePanel;
+    public GameObject playerAcidPanel;
 
     public Image speedIcon;
     public Image strengthIcon;
@@ -109,5 +111,19 @@ public class GameManager : MonoBehaviour
         statePause();
         menuActive = menuLose;
         menuActive.SetActive(true);
+    }
+
+    public bool textActive(bool tof)
+    {
+       if (tof)
+        {
+            TextHitBox.SetActive(true);
+            return true;
+        }
+       else
+        {
+            TextHitBox.SetActive(false);
+            return false;
+        }
     }
 }
