@@ -315,6 +315,7 @@ public class PlayerController : MonoBehaviour, IDamage, ITypesOfItems, IPickup
     {
         //fill health bar to correct amount
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+        
 
         //check Speed icon pop up 
         if (speedActive)
